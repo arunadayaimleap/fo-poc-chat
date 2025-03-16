@@ -53,6 +53,18 @@ export function ChatMessage({ message }: ChatMessageProps) {
     if (!data) return null
     
     if (data.chartType) {
+      // Validate chart data
+      if (!data.chartData || !Array.isArray(data.chartData)) {
+        console.error("Invalid chart data:", data)
+        return (
+          <Card className="mt-4 p-4">
+            <div className="text-sm text-destructive">
+              Invalid chart data format
+            </div>
+          </Card>
+        )
+      }
+
       return (
         <Card className="mt-4 p-4 overflow-hidden">
           <div className="flex items-center justify-between mb-3">

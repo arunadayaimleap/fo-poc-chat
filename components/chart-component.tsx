@@ -56,33 +56,36 @@ export function ChartComponent({ data }: { data: any }) {
   }
 
   const renderChart = () => {
+    if (!data.chartData || !Array.isArray(data.chartData)) {
+      console.error("Invalid chart data:", data);
+      return null;
+    }
+  
+    console.log("Rendering chart:", { type: chartType, data: data.chartData });
+  
     switch (chartType) {
       case 'bar':
         return (
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data.chartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={data.xAxis || 'name'} />
+              <XAxis 
+                dataKey={data.xAxis} 
+                angle={-45}
+                textAnchor="end"
+                height={60}
+              />
               <YAxis />
               <Tooltip />
               <Legend />
-              {data.series ? (
-                data.series.map((series: string, index: number) => (
-                  <Bar 
-                    key={series} 
-                    dataKey={series} 
-                    fill={COLORS[index % COLORS.length]} 
-                  />
-                ))
-              ) : (
-                <Bar 
-                  dataKey={data.yAxis || 'value'} 
-                  fill="#8884d8" 
-                />
-              )}
+              <Bar 
+                dataKey={data.yAxis} 
+                fill="#8884d8"
+                name={data.yAxis?.charAt(0).toUpperCase() + data.yAxis?.slice(1)}
+              />
             </BarChart>
           </ResponsiveContainer>
-        )
+        );
         
       case 'line':
         return (
@@ -124,12 +127,15 @@ export function ChartComponent({ data }: { data: any }) {
                 labelLine={true}
                 outerRadius={80}
                 fill="#8884d8"
-                dataKey={data.yAxis || 'value'}
-                nameKey={data.xAxis || 'name'}
-                label
+                dataKey="value"
+                nameKey="name"
+                label={(entry) => entry.name}
               >
                 {data.chartData.map((entry: any, index: number) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={COLORS[index % COLORS.length]} 
+                  />
                 ))}
               </Pie>
               <Tooltip />

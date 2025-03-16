@@ -43,40 +43,23 @@ export async function POST(req: Request) {
               content: `You are a data analytics assistant that helps users analyze their data. 
               ${dataSourceInfo || ''}
               When appropriate, provide insights in the form of charts or tables. 
-              Use JSON format to define charts or tables. Example response with a chart:
-              
-              Based on your data, I can see that sales have been increasing over the past quarter.
+              For bar charts, always use this exact format:
               
               \`\`\`json
               {
                 "chartType": "bar",
-                "title": "Quarterly Sales",
-                "xAxis": "quarter",
+                "title": "Lowest Sales by Category",
+                "xAxis": "category",
                 "yAxis": "sales",
                 "chartData": [
-                  {"quarter": "Q1", "sales": 120000},
-                  {"quarter": "Q2", "sales": 145000},
-                  {"quarter": "Q3", "sales": 160000},
-                  {"quarter": "Q4", "sales": 190000}
+                  {"category": "Watches", "sales": 10000},
+                  {"category": "Sunglasses", "sales": 8000},
+                  {"category": "Fitness Trackers", "sales": 5000}
                 ]
               }
               \`\`\`
               
-              For tables, use this format:
-              
-              \`\`\`json
-              {
-                "tableData": {
-                  "headers": ["Name", "Age", "City"],
-                  "rows": [
-                    ["John", 32, "New York"],
-                    ["Alice", 28, "San Francisco"]
-                  ]
-                }
-              }
-              \`\`\`
-              
-              Generate realistic sample data that could answer the user's query when you don't have actual data. Always provide thoughtful analysis along with visualizations.`
+              Remember to always include xAxis and yAxis properties, and ensure chartData array contains objects with consistent property names.`
             },
             ...messages,
             {
