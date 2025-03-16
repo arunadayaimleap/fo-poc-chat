@@ -1,9 +1,13 @@
+'use client'
+
 import { ChatInterface } from '@/components/chat-interface'
 import { DataSourceSelector } from '@/components/data-source-selector'
 import { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
 import { Menu } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { useState, useEffect } from 'react'
+import { useChatStore } from '@/lib/stores/chat-store'
 
 export const metadata: Metadata = {
   title: 'Dashboard - ChatData',
@@ -11,6 +15,26 @@ export const metadata: Metadata = {
 }
 
 export default function DashboardPage() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const activeDataSource = useChatStore((state) => state.activeDataSource)
+
+  useEffect(() => {
+    // Initialize any necessary data
+    setIsLoading(false)
+  }, [])
+
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-xl font-bold text-destructive">Error</h1>
+          <p className="text-muted-foreground">{error}</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 border-b bg-background">
@@ -50,7 +74,15 @@ export default function DashboardPage() {
         </aside>
         <main className="flex w-full flex-col">
           <div className="flex h-[calc(100vh-8rem)] flex-col">
-            <ChatInterface />
+            {isLoading ? (
+              <div className="flex h-full items-center justify-center">
+                <div className="text-center">
+                  <p className="text-muted-foreground">Loading...</p>
+                </div>
+              </div>
+            ) : (
+              <ChatInterface />
+            )}
           </div>
         </main>
       </div>
