@@ -2,17 +2,11 @@
 
 import { ChatInterface } from '@/components/chat-interface'
 import { DataSourceSelector } from '@/components/data-source-selector'
-import { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
 import { Menu } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useState, useEffect } from 'react'
 import { useChatStore } from '@/lib/stores/chat-store'
-
-export const metadata: Metadata = {
-  title: 'Dashboard - ChatData',
-  description: 'Ask questions about your data using natural language',
-}
 
 export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
