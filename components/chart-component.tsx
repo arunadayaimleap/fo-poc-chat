@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { 
   BarChart, Bar, 
   LineChart, Line,
@@ -27,6 +27,23 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'
 
 export function ChartComponent({ data }: { data: any }) {
   const [chartType, setChartType] = useState(data.chartType || 'bar')
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    console.log("Chart data received:", data)
+    if (!data.chartData || !Array.isArray(data.chartData)) {
+      console.error("Invalid or missing chartData:", data)
+      setError("Invalid chart data")
+    }
+  }, [data])
+
+  if (error) {
+    return (
+      <div className="flex h-full items-center justify-center text-destructive">
+        <p>{error}</p>
+      </div>
+    )
+  }
 
   // Function to export chart as PNG
   const exportChart = () => {
@@ -178,7 +195,7 @@ export function ChartComponent({ data }: { data: any }) {
   }
 
   return (
-    <div className="rounded-md border p-2">
+    <div className="rounded-md border p-2 h-full">
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-sm font-medium">{data.title || "Chart"}</h3>
         <div className="flex gap-1">
@@ -205,7 +222,7 @@ export function ChartComponent({ data }: { data: any }) {
           </Button>
         </div>
       </div>
-      <div id="chart-container" className="h-full w-full">
+      <div className="h-[calc(100%-2rem)]">
         {renderChart()}
       </div>
     </div>

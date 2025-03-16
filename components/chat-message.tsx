@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 import { Card } from "@/components/ui/card"
 import { useState } from "react"
 import { Loader2 } from "lucide-react"
-import { BarChart, LineChart, PieChart, AreaChart } from "recharts"
+import { ChartComponent } from "@/components/chart-component"
 
 interface Message {
   id: string
@@ -65,14 +65,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
                 <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
               </div>
             ) : (
-              <div className="w-full h-full">
-                {/* Simplified chart placeholder - in real app use Recharts as in chart-component.tsx */}
-                <div className="bg-muted/30 rounded-md w-full h-full flex items-center justify-center">
-                  <p className="text-sm text-muted-foreground">
-                    {data.chartType.charAt(0).toUpperCase() + data.chartType.slice(1)} chart with {data.chartData?.length || 0} data points
-                  </p>
-                </div>
-              </div>
+              <ChartComponent data={data} />
             )}
           </div>
         </Card>
